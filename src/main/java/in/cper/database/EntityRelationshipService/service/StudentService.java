@@ -1,11 +1,10 @@
-package in.cper.database.service;
+package in.cper.database.EntityRelationshipService.service;
 
-import in.cper.database.entity.Student;
-import in.cper.database.repository.StudentRepository;
+import in.cper.database.EntityRelationshipService.entity.Student;
+import in.cper.database.EntityRelationshipService.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service

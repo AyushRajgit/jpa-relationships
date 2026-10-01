@@ -1,4 +1,4 @@
-package in.cper.database.entity;
+package in.cper.database.EntityRelationshipService.entity;
 
 import jakarta.persistence.Embeddable;
 

@@ -1,15 +1,14 @@
-package in.cper.database.controller;
+package in.cper.database.EntityRelationshipService.controller;
 
-import in.cper.database.entity.Student;
-import in.cper.database.service.StudentService;
+import in.cper.database.EntityRelationshipService.entity.Student;
+import in.cper.database.EntityRelationshipService.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/student")
+@RequestMapping("/api/StudentEntity")
 public class StudentController {
 
     private StudentService studentService;
