@@ -17,8 +17,8 @@ public class RegisterCustomerService {
     private RegisterCustomerRepository registerCustomerRepository;
 
     @Autowired
-    public RegisterCustomerRepository getRegisterCustomerRepository() {
-        return registerCustomerRepository;
+    public RegisterCustomerService(RegisterCustomerRepository registerCustomerRepository) {
+        this.registerCustomerRepository = registerCustomerRepository;
     }
 
     @Transactional

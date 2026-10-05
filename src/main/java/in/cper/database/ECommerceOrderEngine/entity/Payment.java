@@ -1,9 +1,6 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,9 +17,14 @@ public class Payment {
 
     private LocalTime time;
 
+    private String paidAt;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    private String paidAt;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Orders order;
 
     public int getTransactionId() {
         return transactionId;

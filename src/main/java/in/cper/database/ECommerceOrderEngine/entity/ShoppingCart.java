@@ -11,7 +11,7 @@ public class ShoppingCart {
     private int shoppingCartId;
     @OneToOne
     private Customer customer;
-    @OneToMany
+    @OneToMany(mappedBy = "shoppingCart")
     private List<CartItem> cartItems;
 
     public int getShoppingCartId() {
