@@ -1,5 +1,6 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -15,11 +16,19 @@ public class OrderItems {
 
     @ManyToOne
     @JoinColumn(name = "orderId")
+    @JsonIgnore
     private Orders order;
 
     private int quantity;
 
     private BigDecimal priceAtCheckout;
+
+    public OrderItems(Product product, Orders order, int quantity, BigDecimal priceAtCheckout) {
+        this.product = product;
+        this.order = order;
+        this.quantity = quantity;
+        this.priceAtCheckout = priceAtCheckout;
+    }
 
     public Orders getOrder() {
         return order;

@@ -9,7 +9,9 @@ import java.time.LocalTime;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int transactionId;
+    private int paymentId;
+
+    private String transactionId;
 
     private String paymentMethod;
 
@@ -26,11 +28,37 @@ public class Payment {
     @JoinColumn(name = "order_id")
     private Orders order;
 
-    public int getTransactionId() {
+    public Payment(String transactionId, String paymentMethod, LocalDate date, LocalTime time, String paidAt, Status status, Orders order) {
+        this.transactionId = transactionId;
+        this.paymentMethod = paymentMethod;
+        this.date = date;
+        this.time = time;
+        this.paidAt = paidAt;
+        this.status = status;
+        this.order = order;
+    }
+
+    public int getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(int paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Orders getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orders order) {
+        this.order = order;
+    }
+
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 

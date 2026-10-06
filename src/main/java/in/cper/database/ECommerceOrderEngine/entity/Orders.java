@@ -2,25 +2,30 @@ package in.cper.database.ECommerceOrderEngine.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    private int transactionId;
+    private String transactionId;
     private LocalDate date;
     private LocalTime time;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItems> orderItems;
+    private Set<OrderItems> orderItems = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    private BigDecimal totalAmount;
 
     public Customer getCustomer() {
         return customer;
@@ -38,11 +43,11 @@ public class Orders {
         this.orderId = orderId;
     }
 
-    public int getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
@@ -62,11 +67,19 @@ public class Orders {
         this.time = time;
     }
 
-    public List<OrderItems> getOrderItems() {
+    public Set<OrderItems> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderItems> orderItems) {
+    public void setOrderItems(Set<OrderItems> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

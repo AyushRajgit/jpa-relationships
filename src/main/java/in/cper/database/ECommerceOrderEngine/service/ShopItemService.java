@@ -5,6 +5,7 @@ import in.cper.database.ECommerceOrderEngine.entity.Product;
 import in.cper.database.ECommerceOrderEngine.entity.ShoppingCart;
 import in.cper.database.ECommerceOrderEngine.exceptions.NoStockAvailableException;
 import in.cper.database.ECommerceOrderEngine.exceptions.NotFoundException;
+import in.cper.database.ECommerceOrderEngine.repository.CartItemRepository;
 import in.cper.database.ECommerceOrderEngine.repository.RegisterCustomerRepository;
 import in.cper.database.ECommerceOrderEngine.repository.RegisterProductRepository;
 import in.cper.database.ECommerceOrderEngine.repository.ShopItemRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @Service
