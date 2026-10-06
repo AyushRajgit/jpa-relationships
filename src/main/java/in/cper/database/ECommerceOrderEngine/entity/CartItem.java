@@ -1,5 +1,6 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,6 +15,8 @@ public class CartItem {
     private Product product;
 
     @ManyToOne
+    @JsonIgnore
+    // handling back reference (ShoppingCart prints CartItem then it prints ShoppingCart and so on.....)
     private ShoppingCart shoppingCart;
 
     private int quantity;

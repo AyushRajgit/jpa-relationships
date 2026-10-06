@@ -2,7 +2,10 @@ package in.cper.database.ECommerceOrderEngine.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ShoppingCart {
@@ -12,7 +15,7 @@ public class ShoppingCart {
     @OneToOne
     private Customer customer;
     @OneToMany(mappedBy = "shoppingCart")
-    private List<CartItem> cartItems;
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public int getShoppingCartId() {
         return shoppingCartId;
@@ -30,11 +33,11 @@ public class ShoppingCart {
         this.customer = customer;
     }
 
-    public List<CartItem> getCartItems() {
+    public Set<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
+    public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
 }

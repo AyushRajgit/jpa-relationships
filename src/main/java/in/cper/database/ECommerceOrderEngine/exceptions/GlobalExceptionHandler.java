@@ -44,5 +44,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dto);
     }
 
+    @ExceptionHandler(NoStockAvailableException.class)
+    public ResponseEntity<ExceptionDTO> handleUserNoStockAvailableException(NoStockAvailableException e, HttpServletRequest request) {
+        ExceptionDTO dto = new ExceptionDTO(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                e.getMessage(),
+                request.getRequestURI()
+        );
 
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dto);
+    }
 }
