@@ -1,10 +1,12 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,12 +20,15 @@ public class Orders {
     private LocalDate date;
     private LocalTime time;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<OrderItems> orderItems = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Payment> payment = new ArrayList<>();
 
     private BigDecimal totalAmount;
 
@@ -81,5 +86,13 @@ public class Orders {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public List<Payment> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Payment> payment) {
+        this.payment = payment;
     }
 }

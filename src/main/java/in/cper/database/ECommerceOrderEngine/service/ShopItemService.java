@@ -62,7 +62,8 @@ public class ShopItemService {
                 () -> new NotFoundException("Customer not found associated to customerId : " + customerId + " while adding customer details to cart")
         ));
 
-        cartItemRepository.save(newCartItem);
+        // used Cascase.ALL so saving parent entity would automatically save related one's.
+        // cartItemRepository.save(newCartItem);
         shopItemRepository.save(shoppingCart);
 
         return shoppingCart.getCartItems();
@@ -98,7 +99,7 @@ public class ShopItemService {
 
         if (targetRef != null) {
             if (shoppingCart.getCartItems().contains(targetRef)) shoppingCart.getCartItems().remove(targetRef);
-            cartItemRepository.delete(targetRef);
+            shoppingCart.getCartItems().remove(targetRef);
         } else {
             throw new NotFoundException("Product with id :" + productId + " for customer with id :" + " not found while removing from cart");
         }

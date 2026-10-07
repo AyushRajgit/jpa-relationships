@@ -1,6 +1,10 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -13,6 +17,12 @@ public class Customer {
     private String phoneNumber;
     @Embedded
     private Address address;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private ShoppingCart shoppingCart;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Orders> orders = new ArrayList<>();
 
     public Address getAddress() {
         return address;
@@ -60,5 +70,21 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 }

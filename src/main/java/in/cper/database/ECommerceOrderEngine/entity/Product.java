@@ -1,8 +1,11 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -21,6 +24,10 @@ public class Product {
 
     @Lob
     private String merchantDetail;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public int getProductId() {
         return productId;
@@ -68,5 +75,13 @@ public class Product {
 
     public void setMerchantDetail(String merchantDetail) {
         this.merchantDetail = merchantDetail;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

@@ -5,6 +5,7 @@ import in.cper.database.ECommerceOrderEngine.entity.*;
 import in.cper.database.ECommerceOrderEngine.exceptions.NotFoundException;
 import in.cper.database.ECommerceOrderEngine.repository.*;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,7 +36,7 @@ public class CheckOutService {
 
     @Transactional
     public CheckOutDTO performCheckOut(int customerId) {
-        ShoppingCart shoppingCart = shopItemRepository.findById(customerId).orElseThrow(
+        ShoppingCart shoppingCart = shopItemRepository.findByCustomer_CustomerId(customerId).orElseThrow(
                 () -> new NotFoundException("ShoppingCart not found with associated to customerId: " + customerId)
         );
 
@@ -51,8 +52,11 @@ public class CheckOutService {
         CheckOutDTO checkOutDTO = dtoMapper(newOrder, payment);
 
         // releasing resources
-        cartItemRepository.deleteAll(cartItems);
-        shopItemRepository.deleteById(customerId);
+        // used Cascase.ALL so deleting parent entity would automatically delete related one's.
+        // cartItemRepository.deleteAll(cartItems);
+        customer.setShoppingCart(null);
+        shoppingCart.setCustomer(null);
+        shopItemRepository.delete(shoppingCart);
         logOrder(checkOutDTO);
 
         return checkOutDTO;
@@ -98,8 +102,9 @@ public class CheckOutService {
                 newOrder
         );
 
-        paymentRepository.save(payment);
+        // paymentRepository.save(payment);
 
+        newOrder.getPayment().add(payment);
         newOrder.setDate(payment.getDate());
         newOrder.setTime(payment.getTime());
         newOrder.setTransactionId(payment.getTransactionId());

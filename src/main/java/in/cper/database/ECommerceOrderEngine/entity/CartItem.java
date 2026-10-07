@@ -11,10 +11,12 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shoppingCart_id")
     @JsonIgnore
     // handling back reference (ShoppingCart prints CartItem then it prints ShoppingCart and so on.....)
     private ShoppingCart shoppingCart;

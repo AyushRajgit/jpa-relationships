@@ -1,5 +1,6 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -24,8 +25,9 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Orders order;
 
     public Payment(String transactionId, String paymentMethod, LocalDate date, LocalTime time, String paidAt, Status status, Orders order) {
@@ -101,4 +103,5 @@ public class Payment {
     public void setPaidAt(String paidAt) {
         this.paidAt = paidAt;
     }
+
 }

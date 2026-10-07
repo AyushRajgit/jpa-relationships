@@ -1,6 +1,7 @@
 package in.cper.database.ECommerceOrderEngine.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,8 +14,9 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int shoppingCartId;
     @OneToOne
+    @JoinColumn(name = "customer_Id")
     private Customer customer;
-    @OneToMany(mappedBy = "shoppingCart")
+    @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<CartItem> cartItems = new HashSet<>();
 
     public int getShoppingCartId() {
