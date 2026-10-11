@@ -24,7 +24,16 @@ public class BankAccountDetailEntity {
     @Embedded
     private AccountPassKey accountPassKey;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customerId")
     private CustomerEntity customer;
+
+    public BankAccountDetailEntity(String bankName, String bankAccountNumber, BigDecimal balance, AccountPassKey accountPassKey, CustomerEntity customer) {
+        this.bankName = bankName;
+        this.bankAccountNumber = bankAccountNumber;
+        this.balance = balance;
+        this.accountPassKey = accountPassKey;
+        this.customer = customer;
+        this.accountPassKey = accountPassKey;
+    }
 }

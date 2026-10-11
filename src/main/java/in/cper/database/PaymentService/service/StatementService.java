@@ -23,7 +23,7 @@ public class StatementService {
     }
 
     public List<StatementDTO> getStatement(Long customerId) {
-        List<TransactionRecord> transactionRecords = transactionRepository.findByCustomerId(customerId);
+        List<TransactionRecord> transactionRecords = transactionRepository.findByCustomer_CustomerId(customerId);
 
         List<StatementDTO> statementDTOs = new ArrayList<>();
         for (TransactionRecord transactionRecord : transactionRecords) {

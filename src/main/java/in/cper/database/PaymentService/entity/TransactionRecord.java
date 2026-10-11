@@ -20,7 +20,9 @@ public class TransactionRecord {
     @Column(updatable = false, nullable = false)
     private String transactionId;
 
-    private Long  customerId;
+    @ManyToOne
+    @JoinColumn(name = "customerId")
+    private CustomerEntity customer;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;

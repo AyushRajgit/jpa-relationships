@@ -1,5 +1,6 @@
 package in.cper.database.PaymentService.entity;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@Entity
+@Embeddable
 public class AccountPassKey {
     private Long passKey;
     private LocalDateTime createdDateTime;
@@ -28,4 +29,5 @@ public class AccountPassKey {
     public void onUpdate() {
         updatedDateTime = LocalDateTime.now();
     }
+
 }

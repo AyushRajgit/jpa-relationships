@@ -2,8 +2,10 @@ package in.cper.database.PaymentService.service;
 
 import in.cper.database.ECommerceOrderEngine.exceptions.NotFoundException;
 import in.cper.database.PaymentService.dto.AccountDetailsDTO;
+import in.cper.database.PaymentService.dto.AccountRequestDTO;
 import in.cper.database.PaymentService.dto.CustomerRequestDTO;
 import in.cper.database.PaymentService.dto.CustomerResponseDTO;
+import in.cper.database.PaymentService.dtoMapper.AccountMapper;
 import in.cper.database.PaymentService.dtoMapper.CustomerRegistration_ReqToRes_Mapper;
 import in.cper.database.PaymentService.entity.BankAccountDetailEntity;
 import in.cper.database.PaymentService.entity.CustomerEntity;
@@ -21,11 +23,13 @@ public class CreateCustomerService {
     private CustomerRepository customerRepository;
     private BankAccountRepository bankAccountRepository;
     private CustomerRegistration_ReqToRes_Mapper ReqRes_Mapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    public CreateCustomerService(CustomerRepository customerRepository, CustomerRegistration_ReqToRes_Mapper ReqRes_Mapper) {
+    public CreateCustomerService(CustomerRepository customerRepository, CustomerRegistration_ReqToRes_Mapper ReqRes_Mapper, AccountMapper accountMapper) {
         this.customerRepository = customerRepository;
         this.ReqRes_Mapper = ReqRes_Mapper;
+        this.accountMapper = accountMapper;
     }
 
     public CustomerResponseDTO registerNewCustomer(CustomerRequestDTO customerRequestDTO) {
@@ -57,5 +61,16 @@ public class CreateCustomerService {
         );
 
         account.getAccountPassKey().setPassKey(newPassKey);
+    }
+
+    public String addAccount(Long customerId, AccountRequestDTO accountRequestDTO) {
+        CustomerEntity customer = customerRepository.findById(customerId).orElseThrow(
+                () ->  new NotFoundException("Customer with id:"+ customerId +"not found")
+        );
+
+        BankAccountDetailEntity account = accountMapper.accountReqToBankAccount(accountRequestDTO, customer);
+        customer.getBankAccounts().add(account);
+
+        return "Account created successfully";
     }
 }

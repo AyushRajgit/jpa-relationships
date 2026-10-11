@@ -2,7 +2,9 @@ package in.cper.database.PaymentService.dtoMapper;
 
 import in.cper.database.PaymentService.dto.StatementDTO;
 import in.cper.database.PaymentService.entity.TransactionRecord;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StatementMapper {
     public StatementDTO transactionToStatementDTO(TransactionRecord transaction) {
         StatementDTO statementDTO = new StatementDTO(

@@ -1,9 +1,6 @@
 package in.cper.database.PaymentService.controller;
 
-import in.cper.database.PaymentService.dto.AccountDetailsDTO;
-import in.cper.database.PaymentService.dto.CustomerRequestDTO;
-import in.cper.database.PaymentService.dto.CustomerResponseDTO;
-import in.cper.database.PaymentService.dto.StatementDTO;
+import in.cper.database.PaymentService.dto.*;
 import in.cper.database.PaymentService.service.CreateCustomerService;
 import in.cper.database.PaymentService.service.StatementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,12 @@ public class CreateCustomerController {
     public ResponseEntity<CustomerResponseDTO> registerNewCustomer(@RequestBody CustomerRequestDTO customerRequestDTO) {
         CustomerResponseDTO newCustomer = createCustomerService.registerNewCustomer(customerRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCustomer);
+    }
+
+    @PostMapping("/addAccount")
+    public ResponseEntity<String> addAccount(@RequestParam Long customerId, @RequestBody AccountRequestDTO accountRequestDTO) {
+        String response = createCustomerService.addAccount(customerId, accountRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/getCustomer/{id}")
