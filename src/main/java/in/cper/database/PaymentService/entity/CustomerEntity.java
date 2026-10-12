@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -22,10 +23,13 @@ public class CustomerEntity {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<BankAccountDetailEntity> bankAccounts;
+    private Set<BankAccountDetailEntity> bankAccounts = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<TransactionRecord> transactions;
+    @OneToMany(mappedBy = "senderCustomer", cascade = CascadeType.ALL)
+    private Set<TransactionRecord> sentTransactions = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiverCustomer", cascade = CascadeType.ALL)
+    private Set<TransactionRecord> receivedTransactions = new HashSet<>();
 
     public CustomerEntity(String firstName, String lastName, String phoneNumber, Set<BankAccountDetailEntity> bankAccounts) {
         this.firstName = firstName;

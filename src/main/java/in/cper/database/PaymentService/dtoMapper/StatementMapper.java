@@ -14,7 +14,7 @@ public class StatementMapper {
                 transaction.getSenderPhoneNumber(),
                 transaction.getReceiverPhoneNumber(),
                 transaction.getDateAndTime(),
-                transaction.getStatus(),
+                transaction.getPaymentStatus(),
                 transaction.getSendersBankName(),
                 transaction.getReceiversBankName(),
                 transaction.getAmount()

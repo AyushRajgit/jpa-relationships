@@ -17,8 +17,7 @@ public class CustomerRegistration_ReqToRes_Mapper {
                 "User created successfully! Enjoy our payment service receive assured cashback...",
                 customerEntity.getFirstName(),
                 customerEntity.getLastName(),
-                customerEntity.getPhoneNumber(),
-                customerEntity.getBankAccounts()
+                customerEntity.getPhoneNumber()
         );
         return res;
     }

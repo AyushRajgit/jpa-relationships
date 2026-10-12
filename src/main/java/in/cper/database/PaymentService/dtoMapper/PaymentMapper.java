@@ -8,12 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PaymentMapper {
 
-    public PaymentResponseDTO paymentMapper(BankAccountDetailEntity bankAccountDetailEntity) {
+    public PaymentResponseDTO paymentMapper(BankAccountDetailEntity sender, BankAccountDetailEntity receiver) {
         return new  PaymentResponseDTO(
                 "Payment successful!",
-                bankAccountDetailEntity.getBankName(),
-                bankAccountDetailEntity.getBankAccountNumber(),
-                bankAccountDetailEntity.getBalance()
+                "Paid to " + receiver.getBankAccountNumber() + " from " + sender.getBankAccountNumber(),
+                sender.getBankName(),
+                sender.getBankAccountNumber(),
+                sender.getBalance()
         );
     }
 }

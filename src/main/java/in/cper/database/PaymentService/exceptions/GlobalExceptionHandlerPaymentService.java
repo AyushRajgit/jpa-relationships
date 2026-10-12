@@ -34,4 +34,16 @@ public class GlobalExceptionHandlerPaymentService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDTOs);
     }
 
+    @ExceptionHandler(WrongPassKeyException.class)
+    public ResponseEntity<ExceptionDTOs> handleWrongPassKeyException(WrongPassKeyException e, HttpServletRequest request) {
+        ExceptionDTOs exceptionDTOs = new ExceptionDTOs(
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(exceptionDTOs);
+    }
+
 }

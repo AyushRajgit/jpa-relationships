@@ -15,5 +15,4 @@ public class CustomerResponseDTO {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private Set<BankAccountDetailEntity> bankAccountDetails;
 }

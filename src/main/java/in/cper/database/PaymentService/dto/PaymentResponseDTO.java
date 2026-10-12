@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentResponseDTO {
     private String Message;
+    private String transactionMessage;
     private String bankName;
     private String bankAccountNumber;
     private BigDecimal currentBalance;

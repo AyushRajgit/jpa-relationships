@@ -6,12 +6,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
 public class AccountPassKey {
@@ -19,15 +21,8 @@ public class AccountPassKey {
     private LocalDateTime createdDateTime;
     private LocalDateTime updatedDateTime;
 
-    @PrePersist
-    public void onCreation() {
-        createdDateTime = LocalDateTime.now();
-        updatedDateTime = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        updatedDateTime = LocalDateTime.now();
+    public AccountPassKey(Long passKey) {
+        this.passKey = passKey;
     }
 
 }

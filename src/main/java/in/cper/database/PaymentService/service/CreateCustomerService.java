@@ -11,6 +11,7 @@ import in.cper.database.PaymentService.entity.BankAccountDetailEntity;
 import in.cper.database.PaymentService.entity.CustomerEntity;
 import in.cper.database.PaymentService.repository.BankAccountRepository;
 import in.cper.database.PaymentService.repository.CustomerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,14 @@ public class CreateCustomerService {
     private AccountMapper accountMapper;
 
     @Autowired
-    public CreateCustomerService(CustomerRepository customerRepository, CustomerRegistration_ReqToRes_Mapper ReqRes_Mapper, AccountMapper accountMapper) {
+    public CreateCustomerService(CustomerRepository customerRepository, BankAccountRepository bankAccountRepository,CustomerRegistration_ReqToRes_Mapper ReqRes_Mapper, AccountMapper accountMapper) {
         this.customerRepository = customerRepository;
+        this.bankAccountRepository = bankAccountRepository;
         this.ReqRes_Mapper = ReqRes_Mapper;
         this.accountMapper = accountMapper;
     }
 
+    @Transactional
     public CustomerResponseDTO registerNewCustomer(CustomerRequestDTO customerRequestDTO) {
         CustomerEntity customerEntity = ReqRes_Mapper.reqToEntityMapper(customerRequestDTO);
         CustomerEntity createdCustomer = customerRepository.save(customerEntity);
@@ -55,14 +58,17 @@ public class CreateCustomerService {
         return accountRes;
     }
 
+    @Transactional
     public void updatePassKey(Long customerId, Long accountId, Long newPassKey) {
         BankAccountDetailEntity account = bankAccountRepository.findById(accountId).orElseThrow(
-                () ->  new NotFoundException("Account with id:"+ accountId +"not found while changing passkey")
+                () ->  new NotFoundException("Account with id:"+ accountId +" not found while changing passkey")
         );
 
         account.getAccountPassKey().setPassKey(newPassKey);
+        bankAccountRepository.save(account);
     }
 
+    @Transactional
     public String addAccount(Long customerId, AccountRequestDTO accountRequestDTO) {
         CustomerEntity customer = customerRepository.findById(customerId).orElseThrow(
                 () ->  new NotFoundException("Customer with id:"+ customerId +"not found")
@@ -70,6 +76,7 @@ public class CreateCustomerService {
 
         BankAccountDetailEntity account = accountMapper.accountReqToBankAccount(accountRequestDTO, customer);
         customer.getBankAccounts().add(account);
+        customerRepository.save(customer);
 
         return "Account created successfully";
     }

@@ -5,6 +5,9 @@ import in.cper.database.PaymentService.dtoMapper.StatementMapper;
 import in.cper.database.PaymentService.entity.TransactionRecord;
 import in.cper.database.PaymentService.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,11 +25,14 @@ public class StatementService {
         this.statementMapper = statementMapper;
     }
 
-    public List<StatementDTO> getStatement(Long customerId) {
-        List<TransactionRecord> transactionRecords = transactionRepository.findByCustomer_CustomerId(customerId);
+    public List<StatementDTO> getStatement(Long customerId, int pageNo, int pageSize) {
+        List<TransactionRecord> transactionRecords = transactionRepository.findBySenderCustomer_CustomerId(customerId);
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<TransactionRecord> page = transactionRepository.findAll(pageable);
 
         List<StatementDTO> statementDTOs = new ArrayList<>();
-        for (TransactionRecord transactionRecord : transactionRecords) {
+        for (TransactionRecord transactionRecord : page.getContent()) {
             statementDTOs.add(statementMapper.transactionToStatementDTO(transactionRecord));
         }
 

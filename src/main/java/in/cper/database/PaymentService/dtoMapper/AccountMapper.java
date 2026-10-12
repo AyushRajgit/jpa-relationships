@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountMapper {
     public BankAccountDetailEntity accountReqToBankAccount(AccountRequestDTO accountRequestDTO, CustomerEntity customer) {
-        return new BankAccountDetailEntity(
-                accountRequestDTO.getBankName(),
-                accountRequestDTO.getBankAccountNumber(),
-                accountRequestDTO.getBalance(),
-                accountRequestDTO.getAccountPassKey(),
-                customer
-        );
+        BankAccountDetailEntity account = new BankAccountDetailEntity();
+        account.setBankName(accountRequestDTO.getBankName());
+        account.setBankAccountNumber(accountRequestDTO.getBankAccountNumber());
+        account.setAccountPassKey(new AccountPassKey(accountRequestDTO.getPassKey()));
+        account.setCustomer(customer);
+        account.setBalance(accountRequestDTO.getBalance());
+        return account;
     }
 }

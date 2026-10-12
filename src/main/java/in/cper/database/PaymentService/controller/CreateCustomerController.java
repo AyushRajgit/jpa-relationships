@@ -48,9 +48,9 @@ public class CreateCustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(accountDetails);
     }
 
-    @GetMapping("/statement/{id}")
-    public ResponseEntity<List<StatementDTO>> getStatement(@PathVariable Long id) {
-        List<StatementDTO> statement = statementService.getStatement(id);
+    @GetMapping("/statement")
+    public ResponseEntity<List<StatementDTO>> getStatement(@RequestParam Long id, @RequestParam int pageNo, @RequestParam int pageSize) {
+        List<StatementDTO> statement = statementService.getStatement(id, pageNo, pageSize);
         return  ResponseEntity.status(HttpStatus.OK).body(statement);
     }
 

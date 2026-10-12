@@ -1,8 +1,11 @@
 package in.cper.database.PaymentService.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import in.cper.database.PaymentService.Enum.PaymentStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -11,6 +14,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class TransactionRecord {
     @Id
@@ -21,8 +26,14 @@ public class TransactionRecord {
     private String transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "customerId")
-    private CustomerEntity customer;
+    @JoinColumn(name = "sender_customerId")
+    @JsonIgnore
+    private CustomerEntity senderCustomer;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_customerId")
+    @JsonIgnore
+    private CustomerEntity receiverCustomer;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
@@ -32,7 +43,6 @@ public class TransactionRecord {
     private String senderPhoneNumber;
     private String receiverPhoneNumber;
     private LocalDateTime dateAndTime;
-    private PaymentStatus status;
     private String sendersBankName;
     private String receiversBankName;
     private BigDecimal amount;
@@ -43,13 +53,15 @@ public class TransactionRecord {
         dateAndTime = LocalDateTime.now();
     }
 
-    public TransactionRecord(String senderName, String receiverName, String senderPhoneNumber, String receiverPhoneNumber, BigDecimal amount, PaymentStatus status, String sendersBankName, String receiversBankName) {
+    public TransactionRecord(CustomerEntity senderCustomer, CustomerEntity receiverCustomer, String senderName, String receiverName, String senderPhoneNumber, String receiverPhoneNumber, BigDecimal amount, PaymentStatus status, String sendersBankName, String receiversBankName) {
+        this.senderCustomer = senderCustomer;
+        this.receiverCustomer = receiverCustomer;
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.senderPhoneNumber = senderPhoneNumber;
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.amount = amount;
-        this.status = status;
+        this.paymentStatus = status;
         this.sendersBankName = sendersBankName;
         this.receiversBankName = receiversBankName;
     }

@@ -9,11 +9,13 @@ import in.cper.database.PaymentService.entity.CustomerEntity;
 import in.cper.database.PaymentService.entity.TransactionRecord;
 import in.cper.database.PaymentService.exceptions.InsufficientBalance;
 import in.cper.database.PaymentService.exceptions.UserAccountNotFound;
+import in.cper.database.PaymentService.exceptions.WrongPassKeyException;
 import in.cper.database.PaymentService.repository.BankAccountRepository;
 import in.cper.database.PaymentService.repository.CustomerRepository;
 import in.cper.database.PaymentService.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TransferPayment {
@@ -29,13 +31,14 @@ public class TransferPayment {
         this.paymentMapper = paymentMapper;
     }
 
+    @Transactional
     public PaymentResponseDTO pay(PaymentRequestDTO paymentRequestDTO) {
         BankAccountDetailEntity senderBankDetails = validateAccount(paymentRequestDTO.getSendersBankAccountNumber());
         BankAccountDetailEntity recipientBankDetails = validateAccount(paymentRequestDTO.getRecipientsBankAccountNumber());
 
         transactionPossible(senderBankDetails, recipientBankDetails, paymentRequestDTO);
 
-        return paymentMapper.paymentMapper(senderBankDetails);
+        return paymentMapper.paymentMapper(senderBankDetails,recipientBankDetails);
     }
 
     private BankAccountDetailEntity validateAccount(String accountNumber) {
@@ -45,6 +48,10 @@ public class TransferPayment {
     }
 
     private void transactionPossible(BankAccountDetailEntity senderBankDetails, BankAccountDetailEntity recipientBankDetails, PaymentRequestDTO paymentRequestDTO) {
+        if (senderBankDetails.getAccountPassKey().getPassKey().compareTo(paymentRequestDTO.getPassKey()) != 0) {
+            throw new WrongPassKeyException("Provided passkey for transaction doesn't match the existing one");
+        }
+
         if (senderBankDetails.getBalance().compareTo(paymentRequestDTO.getAmount()) <= 0) {
             throw new InsufficientBalance("InsufficientBalance : current balance is less than the amount to be send");
         }
@@ -52,7 +59,7 @@ public class TransferPayment {
         senderBankDetails.setBalance(senderBankDetails.getBalance().subtract(paymentRequestDTO.getAmount()));
         recipientBankDetails.setBalance(recipientBankDetails.getBalance().add(paymentRequestDTO.getAmount()));
 
-        transactionRepository.save(new TransactionRecord(senderBankDetails.getBankName(), recipientBankDetails.getBankName(), senderBankDetails.getCustomer().getPhoneNumber(), recipientBankDetails.getCustomer().getPhoneNumber(), paymentRequestDTO.getAmount(), PaymentStatus.SUCCESS, senderBankDetails.getBankName(), recipientBankDetails.getBankName()));
+        transactionRepository.save(new TransactionRecord(senderBankDetails.getCustomer(), recipientBankDetails.getCustomer(), senderBankDetails.getBankName(), recipientBankDetails.getBankName(), senderBankDetails.getCustomer().getPhoneNumber(), recipientBankDetails.getCustomer().getPhoneNumber(), paymentRequestDTO.getAmount(), PaymentStatus.SUCCESS, senderBankDetails.getBankName(), recipientBankDetails.getBankName()));
         bankAccountRepository.saveAndFlush(senderBankDetails);
     }
 
